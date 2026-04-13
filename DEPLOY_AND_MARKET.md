@@ -53,44 +53,60 @@ Now fill in each value. Follow the sections below.
 4. Go to SQL Editor → paste the entire contents of supabase-schema.sql → Run
 5. Verify tables created: users, analyses, subscriptions
 
-### C — Stripe (Set up before going live)
+### C — Razorpay (India's #1 payment gateway — instant signup, no invite needed)
 
-1. Go to https://stripe.com → Create account
-2. Dashboard → Products → Add Product
-   Create 3 products:
+Why Razorpay?
+- ✅ Indian company — works instantly for Indian founders
+- ✅ Accepts UPI, Cards, NetBanking, Wallets, EMI — all Indian payment methods
+- ✅ International cards accepted too (global customers pay you)
+- ✅ Instant bank account settlement in INR
+- ✅ Free to sign up — only pay per transaction (2% + ₹2 per charge)
+
+1. Go to https://razorpay.com → Create Business Account (takes 10 minutes)
+2. Activate your store:
+   - Dashboard → Settings → Store
+   - Fill in store name, currency (USD recommended), country
+   - Add your payout bank account details
+
+3. Create your product:
+   - Dashboard → Products → New Product
+   - Name: MultiVentures
+   - Add 3 variants (one per plan):
    
-   STARTER ($29/month):
-   - Name: MultiVentures Starter
-   - Pricing: $29/month recurring
-   - Copy Price ID → STRIPE_PRICE_STARTER
+   STARTER — $29/month:
+   - Variant name: Starter
+   - Billing: Monthly recurring
+   - Price: $29
+   - Copy the Variant ID → LS_VARIANT_STARTER
    
-   PRO ($79/month):
-   - Name: MultiVentures Pro
-   - Pricing: $79/month recurring
-   - Copy Price ID → STRIPE_PRICE_PRO
+   PRO — $79/month:
+   - Variant name: Pro  
+   - Billing: Monthly recurring
+   - Price: $79
+   - Copy the Variant ID → LS_VARIANT_PRO
    
-   AGENCY ($299/month):
-   - Name: MultiVentures Agency
-   - Pricing: $299/month recurring
-   - Copy Price ID → STRIPE_PRICE_AGENCY
+   AGENCY — $299/month:
+   - Variant name: Agency
+   - Billing: Monthly recurring
+   - Price: $299
+   - Copy the Variant ID → LS_VARIANT_AGENCY
 
-3. Developers → API Keys:
-   - Copy Secret key → STRIPE_SECRET_KEY
-   - Copy Publishable key → NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+4. Get API credentials:
+   - Dashboard → Settings → API → Create API Key
+   - Copy key → LEMONSQUEEZY_API_KEY
+   - Dashboard → Settings → Store → Copy Store ID → LEMONSQUEEZY_STORE_ID
 
-4. Webhooks (set up AFTER deploying to Vercel — you need your live URL):
-   - Add endpoint: https://your-domain.com/api/stripe/webhook
-   - Events to listen for:
-     ✓ checkout.session.completed
-     ✓ customer.subscription.updated
-     ✓ customer.subscription.deleted
-     ✓ invoice.payment_failed
-   - Copy Signing secret → STRIPE_WEBHOOK_SECRET
-
-5. Enable Billing Portal (so users can manage subscriptions):
-   - Go to: https://dashboard.stripe.com/settings/billing/portal
-   - Enable customer portal
-   - Toggle on: Allow customers to switch plans, Cancel subscriptions
+5. Set up Webhooks (after deploying to Vercel):
+   - Dashboard → Settings → Webhooks → Add webhook
+   - URL: https://your-domain.com/api/payments/webhook
+   - Events to enable:
+     ✓ subscription_created
+     ✓ subscription_updated
+     ✓ subscription_cancelled
+     ✓ subscription_expired
+     ✓ subscription_payment_failed
+     ✓ order_created
+   - Copy Signing Secret → LEMONSQUEEZY_WEBHOOK_SECRET
 
 ### D — Anthropic API Key
 
@@ -177,12 +193,12 @@ Add each of these:
 | NEXT_PUBLIC_SUPABASE_URL             | Supabase → Settings → API    |
 | NEXT_PUBLIC_SUPABASE_ANON_KEY        | Supabase → Settings → API    |
 | SUPABASE_SERVICE_ROLE_KEY            | Supabase → Settings → API    |
-| STRIPE_SECRET_KEY                    | Stripe → Developers → Keys   |
-| NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY   | Stripe → Developers → Keys   |
-| STRIPE_WEBHOOK_SECRET                | Stripe → Webhooks            |
-| STRIPE_PRICE_STARTER                 | Stripe → Products            |
-| STRIPE_PRICE_PRO                     | Stripe → Products            |
-| STRIPE_PRICE_AGENCY                  | Stripe → Products            |
+| RAZORPAY_KEY_ID                      | RZP → Settings → API Keys    |
+| RAZORPAY_KEY_SECRET                  | RZP → Settings → API Keys    |
+| RAZORPAY_WEBHOOK_SECRET              | RZP → Settings → Webhooks    |
+| RAZORPAY_PLAN_STARTER                | RZP → Subscriptions → Plans  |
+| RAZORPAY_PLAN_PRO                    | RZP → Subscriptions → Plans  |
+| RAZORPAY_PLAN_AGENCY                 | RZP → Subscriptions → Plans  |
 | NEXT_PUBLIC_APP_URL                  | https://your-domain.com      |
 
 ---

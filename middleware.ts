@@ -12,7 +12,12 @@ export default withAuth(
   }
 )
 
-// Protect these routes — redirect unauthenticated users to sign-in
 export const config = {
-  matcher: ['/dashboard/:path*', '/history/:path*', '/api/analyze', '/api/history/:path*', '/api/stripe/portal'],
+  matcher: [
+    '/dashboard/:path*',
+    '/history/:path*',
+    '/api/analyze',
+    '/api/history/:path*',
+    '/api/payments/portal',
+  ],
 }
